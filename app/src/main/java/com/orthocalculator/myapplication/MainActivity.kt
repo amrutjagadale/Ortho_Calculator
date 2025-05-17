@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var myWebView: WebView
     private lateinit var bottomNav: BottomNavigationView
-    private val homeUrl = "https://www.orthocalculator.org/!4c7hto7ovrpmtref5c23bgi1vc"
+    private val homeUrl = "https://www.orthocalculator.org/li4c7hto7ovrpmttreft5c23bgi1vc"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
