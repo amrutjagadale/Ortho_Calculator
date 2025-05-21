@@ -3,10 +3,12 @@
     <!-- in res/values/styles.xml -->
     <style name="AppTheme.TransparentActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- make the window’s action bar container transparent -->
-        <item name="android:windowActionBar">true</item>
+        <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="actionBarStyle">@style/TransparentActionBar</item>
-        <item name="android:windowDisablePreview">true</item>
+<!--        <item name="android:windowDisablePreview">true</item>-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="TransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
