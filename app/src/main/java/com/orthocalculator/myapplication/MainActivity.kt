@@ -1,11 +1,19 @@
 package com.orthocalculator.myapplication
 
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.widget.Toolbar
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myWebView: WebView
@@ -28,29 +36,35 @@ class MainActivity : AppCompatActivity() {
         }
         myWebView.webViewClient = WebViewClient()
 
-        // BottomNav
+        // Bottom Navigation
         bottomNav = findViewById(R.id.bottom_navigation)
+
+        // Set initial icon colors to white
+
+
         bottomNav.setOnItemSelectedListener { item ->
+
             when (item.itemId) {
                 R.id.nav_back -> {
                     if (myWebView.canGoBack()) myWebView.goBack() else finish()
-                    true
                 }
                 R.id.nav_home -> {
                     myWebView.loadUrl(homeUrl)
-                    true
                 }
                 R.id.nav_tutorial -> {
                     myWebView.loadUrl("https://www.orthocalculator.org/app-video-library")
-                    true
                 }
-                else -> false
             }
+
+            true // persist selection and show highlight automatically
         }
 
         bottomNav.selectedItemId = R.id.nav_home
+
+        // Load default page without selecting any item
         myWebView.loadUrl(homeUrl)
     }
+
 
     override fun onBackPressed() {
         if (myWebView.canGoBack()) myWebView.goBack() else super.onBackPressed()
