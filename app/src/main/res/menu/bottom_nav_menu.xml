@@ -3,19 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_back"
-        android:title="Back"
-        android:icon="@drawable/ic_arrow"
+        android:icon="@drawable/baseline_arrow_back_24"
         tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/nav_home"
-        android:title="Home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/baseline_home_24"
         tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/nav_tutorial"
-        android:title="Tutorial"
-        android:icon="@drawable/ic_video"
+        android:icon="@drawable/baseline_video_library_24"
         tools:ignore="MenuTitle" />
 </menu>

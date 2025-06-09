@@ -1,76 +1,109 @@
 package com.orthocalculator.myapplication
 
-import android.annotation.SuppressLint
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.widget.Toolbar
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myWebView: WebView
-    private lateinit var bottomNav: BottomNavigationView
-    private val homeUrl = "https://www.orthocalculator.org/li4c7hto7ovrpmttreft5c23bgi1vc"
+    private lateinit var bottomNavLayout: LinearLayout
+    private val homeUrl = "https://www.orthocalculator.org/!4c7hto7ovrpmtref5c23bgi1vc"
 
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Toolbar
+        // Toolbar setup
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // WebView
+        // WebView setup
         myWebView = findViewById(R.id.myWebView)
-        with(myWebView.settings) {
-            javaScriptEnabled = true
-        }
+        myWebView.settings.javaScriptEnabled = true
         myWebView.webViewClient = WebViewClient()
 
-        // BottomNav
-        bottomNav = findViewById(R.id.bottom_navigation)
+        // Custom Bottom Navigation setup
+        bottomNavLayout = findViewById(R.id.bottom_nav_layout)
 
-        bottomNav.setOnItemSelectedListener { item ->
-            val menuView = bottomNav.getChildAt(0) as BottomNavigationMenuView
-            for (i in 0 until menuView.childCount) {
-                val itemView = menuView.getChildAt(i)
-                val menuItem = bottomNav.menu.getItem(i)
-                if (menuItem.itemId == item.itemId) {
-                    itemView.setBackgroundResource(R.color.nav_item_selected_bg) // Selected background
-                } else {
-                    itemView.setBackgroundResource(android.R.color.transparent) // Unselected background
-                }
-            }
+        // Set up navigation buttons
+        setupNavigationButton(R.id.nav_back, R.drawable.baseline_arrow_back_24)
+        setupNavigationButton(R.id.nav_home, R.drawable.baseline_home_24)
+        setupNavigationButton(R.id.nav_tutorial, R.drawable.baseline_video_library_24)
 
-            when (item.itemId) {
-                R.id.nav_back -> {
-                    if (myWebView.canGoBack()) myWebView.goBack() else finish()
-                    true
-                }
-                R.id.nav_home -> {
-                    myWebView.loadUrl(homeUrl)
-                    true
-                }
-                R.id.nav_tutorial -> {
-                    myWebView.loadUrl("https://www.orthocalculator.org/app-video-library")
-                    true
-                }
-                else -> false
-            }
-        }
-
-        bottomNav.selectedItemId = R.id.nav_home
+        // Load initial page
         myWebView.loadUrl(homeUrl)
     }
 
+    private fun setupNavigationButton(buttonId: Int, iconRes: Int) {
+        val button = findViewById<ImageButton>(buttonId)
+
+        // Set initial icon color
+        button.setColorFilter(
+            ContextCompat.getColor(this, R.color.white),
+            PorterDuff.Mode.SRC_IN
+        )
+
+        // Set touch listener for press effect
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // Highlight on press
+                    button.setColorFilter(
+                        ContextCompat.getColor(this, R.color.highlight),
+                        PorterDuff.Mode.SRC_IN
+                    )
+                    v.isPressed = true
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    button.setColorFilter(
+                        ContextCompat.getColor(this, R.color.white),
+                        PorterDuff.Mode.SRC_IN
+                    )
+                    v.isPressed = false
+
+                    // Handle navigation
+                    when (v.id) {
+                        R.id.nav_back -> if (myWebView.canGoBack()) myWebView.goBack() else finish()
+                        R.id.nav_home -> myWebView.loadUrl(homeUrl)
+                        R.id.nav_tutorial -> myWebView.loadUrl("https://www.orthocalculator.org/app-video-library")
+                    }
+                    true
+                }
+
+                MotionEvent.ACTION_CANCEL -> {
+                    button.setColorFilter(
+                        ContextCompat.getColor(this, R.color.white),
+                        PorterDuff.Mode.SRC_IN
+                    )
+                    v.isPressed = false
+                    true
+                }
+
+                else -> false
+            }
+        }
+    }
+
     override fun onBackPressed() {
-        if (myWebView.canGoBack()) myWebView.goBack() else super.onBackPressed()
+        if (myWebView.canGoBack()) {
+            myWebView.goBack()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
